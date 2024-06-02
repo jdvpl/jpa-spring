@@ -1,11 +1,12 @@
 package com.jdvpl.backend.services;
 
-import com.jdvpl.backend.repositories.PeopleRepository;
-import com.jdvpl.backend.repositories.entity.PersonEntity;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.jdvpl.backend.repositories.PeopleRepository;
+import com.jdvpl.backend.repositories.entity.PersonEntity;
 
 @Service
 public class PeopleService {
@@ -22,7 +23,7 @@ public class PeopleService {
         if(peopleRepository.findById(id).isEmpty()){
             return "No existe registro con este id";
         }
-        peopleRepository.findById(id);
-        return  "Registro agregado";
+        peopleRepository.deleteById(id);
+        return  "Registro eliminado";
     }
 }
