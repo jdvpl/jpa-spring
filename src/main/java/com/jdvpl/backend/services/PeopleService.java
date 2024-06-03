@@ -5,25 +5,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jdvpl.backend.repositories.PeopleRepository;
-import com.jdvpl.backend.repositories.entity.PersonEntity;
+import com.jdvpl.backend.repositories.UserRepository;
+import com.jdvpl.backend.repositories.entity.UserEntity;
 
 @Service
 public class PeopleService {
     @Autowired
-    PeopleRepository peopleRepository;
+    UserRepository userRepository;
 
-    public List<PersonEntity> findAll(){
-        return (List<PersonEntity>) peopleRepository.findAll();
+    public List<UserEntity> findAll(){
+        return (List<UserEntity>) userRepository.findAll();
     }
-    public PersonEntity save(PersonEntity personEntity){
-        return  peopleRepository.save(personEntity);
+    public UserEntity save(UserEntity personEntity){
+        return  userRepository.save(personEntity);
     }
     public String delete(int id){
-        if(peopleRepository.findById(id).isEmpty()){
+        if(userRepository.findById(id).isEmpty()){
             return "No existe registro con este id";
         }
-        peopleRepository.deleteById(id);
+        userRepository.deleteById(id);
         return  "Registro eliminado";
     }
 }

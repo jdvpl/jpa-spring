@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jdvpl.backend.repositories.entity.PersonEntity;
+import com.jdvpl.backend.repositories.entity.UserEntity;
 import com.jdvpl.backend.services.PeopleService;
 
 import jakarta.validation.Valid;
@@ -24,18 +24,18 @@ public class PeopleController {
     PeopleService peopleService;
 
     @GetMapping("/all")
-    public List<PersonEntity> getAll(){
+    public List<UserEntity> getAll(){
         return peopleService.findAll();
     }
 
     @PostMapping("/save")
-    public PersonEntity save(@Valid @RequestBody PersonEntity personEntity){
+    public UserEntity save(@Valid @RequestBody UserEntity personEntity){
         return peopleService.save(personEntity);
     }
 
     @PutMapping("/update/{id}")
-    public PersonEntity update(@RequestBody PersonEntity personEntity,@PathVariable(name="id") int id){
-        PersonEntity people =new PersonEntity();
+    public UserEntity update(@RequestBody UserEntity personEntity,@PathVariable(name="id") int id){
+        UserEntity people =new UserEntity();
         people=personEntity;
         people.setId(id);
         return peopleService.save(people);

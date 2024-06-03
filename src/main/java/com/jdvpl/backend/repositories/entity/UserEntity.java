@@ -1,7 +1,5 @@
 package com.jdvpl.backend.repositories.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,21 +8,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "people")
+@Table(name = "users")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonEntity {
+public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotBlank
     private  String name;
@@ -32,18 +29,12 @@ public class PersonEntity {
     private  String lastName;
     @Column(name="email",unique = true)
     @NotBlank
-    @Email(message = "El email no es válido")
-    private  String email;
+    @Email(message = "Invalid email address")
+    private  String username;
     @NotBlank
-    private  String phone;
+    private  String password;
     @NotBlank
-    private  String address;
-    @NotBlank
-    private  String city;
-    @NotBlank
-    private  String country;
-    @NotNull
-    private  Date birthDate;
+    private String role;
 
 
 }
