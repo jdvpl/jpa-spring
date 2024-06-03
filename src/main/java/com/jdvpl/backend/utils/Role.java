@@ -21,4 +21,9 @@ public enum Role {
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
+
+    public String[] split(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'split'");
+    }
 }

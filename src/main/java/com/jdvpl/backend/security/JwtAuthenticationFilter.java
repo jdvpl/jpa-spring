@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.jdvpl.backend.repositories.UserDetailService;
 import com.jdvpl.backend.services.JwtService;
 
 import jakarta.servlet.FilterChain;

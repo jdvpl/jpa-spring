@@ -18,8 +18,8 @@ import com.jdvpl.backend.services.PeopleService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/people")
-public class PeopleController {
+@RequestMapping("/auth")
+public class AuthenticationController {
     @Autowired
     PeopleService peopleService;
 
@@ -34,7 +34,7 @@ public class PeopleController {
     }
 
     @PutMapping("/update/{id}")
-    public UserEntity update(@RequestBody UserEntity personEntity,@PathVariable(name="id") int id){
+    public UserEntity update(@RequestBody UserEntity personEntity,@PathVariable(name="id") Long id){
         UserEntity people =new UserEntity();
         people=personEntity;
         people.setId(id);
