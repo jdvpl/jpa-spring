@@ -1,10 +1,13 @@
 package com.jdvpl.backend.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jdvpl.backend.controller.dto.UserDto;
+import com.jdvpl.backend.controller.dto.UserMapper;
 import com.jdvpl.backend.repositories.UserRepository;
 import com.jdvpl.backend.repositories.entity.UserEntity;
 
@@ -13,8 +16,11 @@ public class AuthenticationService {
     @Autowired
     UserRepository userRepository;
 
-    public List<UserEntity> findAll(){
-        return (List<UserEntity>) userRepository.findAll();
+    public List<UserDto> findAll(){
+        List<UserEntity> users=userRepository.findAll();
+        List<UserDto> userDtos=users.stream().map(user ->   
+        UserMapper.mapper.userEntityToUserDto(user)).collect(Collectors.toList());
+        return  userDtos;
     }
     public UserEntity save(UserEntity personEntity){
         return  userRepository.save(personEntity);

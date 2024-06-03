@@ -29,7 +29,6 @@ public class ValidationHandler {
     
     @ExceptionHandler
     protected ResponseEntity<Object> handleException(DataInvalidException ex) {
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error());
     }
 }

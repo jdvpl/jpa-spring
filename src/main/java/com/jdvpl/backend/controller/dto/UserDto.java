@@ -1,10 +1,11 @@
 package com.jdvpl.backend.controller.dto;
 
-import java.util.Date;
+import com.jdvpl.backend.utils.Role;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,15 +23,11 @@ public class UserDto {
     private  String lastName;
     @NotBlank
     @Email(message = "Invalid Email")
-    private  String email;
+    private  String username;
     @NotBlank
-    private  String phone;
-    @NotBlank
-    private  String address;
-    @NotBlank
-    private  String city;
-    @NotBlank
-    private  String country;
-    @NotNull
-    private  Date birthDate;
+    private  String pass;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
 }
