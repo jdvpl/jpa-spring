@@ -1,5 +1,13 @@
 package com.jdvpl.backend.repositories.entity;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.jdvpl.backend.utils.Role;
 
 import jakarta.persistence.Column;
@@ -23,7 +31,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class UserEntity implements  UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +55,32 @@ public class UserEntity {
     private Role role;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+       List<GrantedAuthority> authorities =role.getPermissions().stream()
+        .map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.name()))
+        .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
