@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jdvpl.backend.repositories.ProductRepository;
 import com.jdvpl.backend.repositories.entity.ProductEntity;
+import com.jdvpl.backend.services.ProductService;
 
 import jakarta.validation.Valid;
 
@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/products")
 public class ProductsController {
     @Autowired
-    private ProductRepository productsRepository;
+    private ProductService productsRepository;
 
     // @PreAuthorize("hasAuthority('READ_ALL_PRODUCTS')")
     @GetMapping

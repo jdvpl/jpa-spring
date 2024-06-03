@@ -9,7 +9,7 @@ import com.jdvpl.backend.repositories.UserRepository;
 import com.jdvpl.backend.repositories.entity.UserEntity;
 
 @Service
-public class PeopleService {
+public class AuthenticationService {
     @Autowired
     UserRepository userRepository;
 
@@ -19,7 +19,7 @@ public class PeopleService {
     public UserEntity save(UserEntity personEntity){
         return  userRepository.save(personEntity);
     }
-    public String delete(int id){
+    public String delete(Long id){
         if(userRepository.findById(id).isEmpty()){
             return "No existe registro con este id";
         }

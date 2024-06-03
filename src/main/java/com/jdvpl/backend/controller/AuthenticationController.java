@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jdvpl.backend.repositories.entity.UserEntity;
-import com.jdvpl.backend.services.PeopleService;
+import com.jdvpl.backend.services.AuthenticationService;
 
 import jakarta.validation.Valid;
 
@@ -21,16 +21,16 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class AuthenticationController {
     @Autowired
-    PeopleService peopleService;
+    AuthenticationService authenticationService;
 
     @GetMapping("/all")
     public List<UserEntity> getAll(){
-        return peopleService.findAll();
+        return authenticationService.findAll();
     }
 
     @PostMapping("/save")
     public UserEntity save(@Valid @RequestBody UserEntity personEntity){
-        return peopleService.save(personEntity);
+        return authenticationService.save(personEntity);
     }
 
     @PutMapping("/update/{id}")
@@ -38,10 +38,10 @@ public class AuthenticationController {
         UserEntity people =new UserEntity();
         people=personEntity;
         people.setId(id);
-        return peopleService.save(people);
+        return authenticationService.save(people);
     }
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable(name="id") int id){
-        return peopleService.delete(id);
+    public String delete(@PathVariable(name="id") Long id){
+        return authenticationService.delete(id);
     }
 }
