@@ -16,7 +16,7 @@ import com.jdvpl.backend.utils.Permission;
 
 @Component
 @EnableWebSecurity
-public class HttpSecurityConfig {
+class HttpSecurityConfig {
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
