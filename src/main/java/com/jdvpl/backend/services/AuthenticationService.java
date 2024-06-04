@@ -53,6 +53,7 @@ public class AuthenticationService {
         extraClaims.put("name",user.getName());
         extraClaims.put("lastName",user.getLastName());
         extraClaims.put("role",user.getRole().name());
+        extraClaims.put("permissions",user.getAuthorities());
         return  extraClaims;
     }
 }
