@@ -45,7 +45,6 @@ public class JwtService {
 
     private Key generateKey() {
        byte[] secretAsBytes= Decoders.BASE64.decode(SECRET_KEY);
-       System.out.println("JwtService.generateKey() clave"+new String(secretAsBytes));
        return Keys.hmacShaKeyFor(secretAsBytes);
     }
 }
