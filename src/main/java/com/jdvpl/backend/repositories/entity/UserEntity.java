@@ -43,7 +43,7 @@ public class UserEntity implements  UserDetails{
     @NotBlank
     private  String lastName;
 
-    @Column(name="email",unique = true)
+    @Column(name="username",unique = true)
     @NotBlank
     @Email(message = "Invalid email address")
     private  String username;

@@ -1,56 +1,51 @@
 package com.jdvpl.backend.services;
 
-import java.time.Instant;
-import java.util.Base64;
+import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.jdvpl.backend.repositories.entity.UserEntity;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+@Service
 public class JwtService {
 
-    private static final String SECRET = "638CBE3A90E0303BF3808F40F95A7F02A24B4B5D029C954CF553F79E9EF1DC0384BE681C249F1223F6B55AA21DC070914834CA22C8DD98E14A872CA010091ACC";
-    private static final long VALIDITY = TimeUnit.MINUTES.toMillis(30);
+    @Value("${security.jwt.secret-key}")
+    private  String SECRET_KEY ;
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, String> claims = new HashMap<>();
-        claims.put("iss", "https://secure.genuinecoder.com");
+    @Value("${security.jwt.expiration-minutes}")
+    private Long EXPIRATION_MINUTES;
+
+
+  
+
+    public String generateToken(UserEntity user, Map<String, Object> extraClaims) {
+        Date issuedADate = new Date(System.currentTimeMillis());
+        Date expirationDate = new Date(issuedADate.getTime()+(EXPIRATION_MINUTES*60*100));
         return Jwts.builder()
-                .claims(claims)
-                .subject(userDetails.getUsername())
-                .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plusMillis(VALIDITY)))
-                .signWith(generateKey())
-                .compact();
+            .setClaims(extraClaims)
+            .setSubject(user.getUsername())
+            .setIssuedAt(issuedADate)
+            .setExpiration(expirationDate)
+            .setHeaderParam(Header.TYPE, Header.TYPE)
+            .signWith(generateKey(),SignatureAlgorithm.HS384)
+            .compact();
     }
 
-    private SecretKey generateKey() {
-        byte[] decodedKey = Base64.getDecoder().decode(SECRET);
-        return Keys.hmacShaKeyFor(decodedKey);
-    }
 
-    public String extractUsername(String jwt) {
-        Claims claims = getClaims(jwt);
-        return claims.getSubject();
-    }
 
-    private Claims getClaims(String jwt) {
-        return Jwts.parser()
-                 .verifyWith(generateKey())
-                 .build()
-                 .parseSignedClaims(jwt)
-                 .getPayload();
-    }
 
-    public boolean isTokenValid(String jwt) {
-        Claims claims = getClaims(jwt);
-        return claims.getExpiration().after(Date.from(Instant.now()));
+    private Key generateKey() {
+       byte[] secretAsBytes= Decoders.BASE64.decode(SECRET_KEY);
+       System.out.println("JwtService.generateKey() clave"+new String(secretAsBytes));
+       return Keys.hmacShaKeyFor(secretAsBytes);
     }
 }

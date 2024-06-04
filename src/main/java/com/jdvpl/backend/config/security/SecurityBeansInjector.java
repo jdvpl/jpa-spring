@@ -2,7 +2,6 @@ package com.jdvpl.backend.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 import com.jdvpl.backend.repositories.UserRepository;
 
 @Component
-@Configuration
 public class SecurityBeansInjector {
     
     @Autowired
