@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.jdvpl.backend.controller.dto.AuthenticationRequestDto;
 import com.jdvpl.backend.controller.dto.AuthenticationResponse;
+import com.jdvpl.backend.controller.dto.RegisterRequestDto;
 import com.jdvpl.backend.repositories.UserRepository;
 import com.jdvpl.backend.repositories.entity.UserEntity;
 
@@ -35,6 +36,19 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login( AuthenticationRequestDto authentication) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            authentication.getUsername(),
+            authentication.getPassword()
+        );
+        authenticationManager.authenticate(authenticationToken);
+        UserEntity user = userRepository.findByUsername(authentication.getUsername()).get();
+
+        String jwt=jwtService.generateToken(user,generateExtraClaims(user));
+        AuthenticationResponse token= new AuthenticationResponse(jwt);
+        return  token;
+
+    }
+    public AuthenticationResponse register( RegisterRequestDto authentication) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
             authentication.getUsername(),
             authentication.getPassword()

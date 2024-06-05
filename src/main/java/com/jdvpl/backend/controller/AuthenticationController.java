@@ -2,8 +2,8 @@ package com.jdvpl.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-
+    @PreAuthorize("permitAll")
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequestDto authentication){
         
@@ -31,9 +31,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(token);
     }
 
-    @GetMapping("/public")
-    public String getMethodName() {
-        return "Public method";
+    @PreAuthorize("permitAll")
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody AuthenticationRequestDto authentication){
+        
+        AuthenticationResponse token=authenticationService.login(authentication);
+        return ResponseEntity.ok(token);
     }
     
 
