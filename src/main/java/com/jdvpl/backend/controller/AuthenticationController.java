@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jdvpl.backend.controller.dto.AuthenticationRequestDto;
 import com.jdvpl.backend.controller.dto.AuthenticationResponse;
+import com.jdvpl.backend.controller.dto.RegisterRequestDto;
 import com.jdvpl.backend.services.AuthenticationService;
 
 import jakarta.validation.Valid;
@@ -33,9 +34,9 @@ public class AuthenticationController {
 
     @PreAuthorize("permitAll")
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody AuthenticationRequestDto authentication){
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequestDto authentication){
         
-        AuthenticationResponse token=authenticationService.login(authentication);
+        AuthenticationResponse token=authenticationService.register(authentication);
         return ResponseEntity.ok(token);
     }
     

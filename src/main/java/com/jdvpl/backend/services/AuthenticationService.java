@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jdvpl.backend.controller.dto.AuthenticationRequestDto;
@@ -13,6 +14,7 @@ import com.jdvpl.backend.controller.dto.AuthenticationResponse;
 import com.jdvpl.backend.controller.dto.RegisterRequestDto;
 import com.jdvpl.backend.repositories.UserRepository;
 import com.jdvpl.backend.repositories.entity.UserEntity;
+import com.jdvpl.backend.utils.Role;
 
 @Service
 public class AuthenticationService {
@@ -23,6 +25,9 @@ public class AuthenticationService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     public UserEntity save(UserEntity personEntity){
         return  userRepository.save(personEntity);
     }
@@ -49,13 +54,15 @@ public class AuthenticationService {
 
     }
     public AuthenticationResponse register( RegisterRequestDto authentication) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            authentication.getUsername(),
-            authentication.getPassword()
-        );
-        authenticationManager.authenticate(authenticationToken);
-        UserEntity user = userRepository.findByUsername(authentication.getUsername()).get();
-
+       
+        String password= passwordEncoder.encode(authentication.getPassword());
+        UserEntity newUserEntity = new UserEntity();
+        newUserEntity.setUsername(authentication.getUsername());
+        newUserEntity.setPassword(password);
+        newUserEntity.setName(authentication.getName());
+        newUserEntity.setLastName(authentication.getLastName());
+        newUserEntity.setRole(Role.CUSTOMER);
+        UserEntity user = userRepository.save(newUserEntity);
         String jwt=jwtService.generateToken(user,generateExtraClaims(user));
         AuthenticationResponse token= new AuthenticationResponse(jwt);
         return  token;
