@@ -2,6 +2,8 @@ package com.jdvpl.backend.repositories.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,6 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @ToString
+@Setter
 @NoArgsConstructor
 @Builder
 public class CategoryEntity {
@@ -23,7 +26,9 @@ public class CategoryEntity {
     @Column(columnDefinition = "boolean default true")
     private Boolean status;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<ProductEntity> products;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private List<ProductEntity> products = new ArrayList<>();
+
+
 }
