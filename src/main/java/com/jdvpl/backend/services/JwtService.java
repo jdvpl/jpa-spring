@@ -32,7 +32,7 @@ public class JwtService {
      */
     public String generateToken(UserEntity user, Map<String, Object> extraClaims) {
         Date issuedADate = new Date(System.currentTimeMillis());
-        Date expirationDate = new Date(issuedADate.getTime()+(EXPIRATION_MINUTES*60*100));
+        Date expirationDate = new Date(issuedADate.getTime()+(EXPIRATION_MINUTES*60*1000));
         return Jwts.builder()
             .setClaims(extraClaims)
             .setSubject(user.getUsername())
