@@ -4,15 +4,13 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
+import com.jdvpl.backend.errors.JwtExpiredException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.jdvpl.backend.repositories.entity.UserEntity;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -72,9 +70,14 @@ public class JwtService {
      * @return      the claims extracted from the JWT token
      */
     private Claims extactAllClaims(String jwt) {
-        return Jwts.parserBuilder()
-            .setSigningKey(generateKey())
-            .build()
-            .parseClaimsJws(jwt).getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(generateKey())
+                    .build()
+                    .parseClaimsJws(jwt).getBody();
+        } catch (Exception e) {
+            throw new JwtExpiredException("El token JWT ha expirado");
+        }
     }
+
 }

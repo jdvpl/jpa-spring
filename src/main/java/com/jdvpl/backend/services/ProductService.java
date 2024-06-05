@@ -1,7 +1,10 @@
 package com.jdvpl.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.jdvpl.backend.controller.dto.ProductDTO;
+import com.jdvpl.backend.utils.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,9 @@ import com.jdvpl.backend.repositories.entity.ProductEntity;
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    private Mappers mappers;
 
     public List<ProductEntity> findAll(){
         return (List<ProductEntity>) productRepository.findAll();
@@ -25,5 +31,13 @@ public class ProductService {
         }
         productRepository.deleteById(id);
         return  "Registro eliminado";
+    }
+
+    public List<ProductDTO> saveAllProducts(List<ProductEntity> entities){
+        List<ProductDTO> products = new ArrayList<>();
+        entities.forEach(e -> {
+            products.add(mappers.toDTO(productRepository.save(e)));
+        });
+        return products;
     }
 }
