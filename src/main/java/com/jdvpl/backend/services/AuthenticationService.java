@@ -2,6 +2,7 @@ package com.jdvpl.backend.services;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.jdvpl.backend.controller.dto.AuthenticationRequestDto;
 import com.jdvpl.backend.controller.dto.AuthenticationResponse;
 import com.jdvpl.backend.controller.dto.RegisterRequestDto;
+import com.jdvpl.backend.errors.ValidationHandler;
 import com.jdvpl.backend.repositories.UserRepository;
 import com.jdvpl.backend.repositories.entity.UserEntity;
 import com.jdvpl.backend.utils.Role;
@@ -27,6 +29,7 @@ public class AuthenticationService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     
     public UserEntity save(UserEntity personEntity){
         return  userRepository.save(personEntity);
@@ -56,6 +59,10 @@ public class AuthenticationService {
     public AuthenticationResponse register( RegisterRequestDto authentication) {
        
         String password= passwordEncoder.encode(authentication.getPassword());
+        Optional<UserEntity> exists = userRepository.findByUsername(authentication.getUsername());
+        if(exists.isPresent()){
+            throw new  ValidationHandler.CustomerError("El usuario ya existe");
+        }   
         UserEntity newUserEntity = new UserEntity();
         newUserEntity.setUsername(authentication.getUsername());
         newUserEntity.setPassword(password);

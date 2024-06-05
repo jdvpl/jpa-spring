@@ -25,5 +25,19 @@ public class ValidationHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
-    
+    public ResponseEntity<Map<String, String>> createErrorResponse(String message, HttpStatus status, HttpServletRequest request) {
+        Map<String, String> apiError = new HashMap<>();
+        apiError.put("message", message);
+        apiError.put("timestamp", new Date().toString());
+        apiError.put("url", request.getRequestURL().toString());
+        apiError.put("http-method", request.getMethod());
+
+        return ResponseEntity.status(status).body(apiError);
+    }
+
+    public static class CustomerError extends RuntimeException {
+        public CustomerError(String message) {
+            super(message);
+        }
+    }
 }
