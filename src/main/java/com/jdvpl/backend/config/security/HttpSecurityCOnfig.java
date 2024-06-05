@@ -19,7 +19,7 @@ import com.jdvpl.backend.config.security.filter.JwtAuthenticationFilter;
 @Component
 @EnableWebSecurity
 @EnableMethodSecurity
-public class HttpSecurityConfig {
+class HttpSecurityConfig {
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
@@ -33,7 +33,7 @@ public class HttpSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(csrfConfig-> csrfConfig.disable())
-.sessionManagement(sessionManagementConfig ->
+                .sessionManagement(sessionManagementConfig ->
                         sessionManagementConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -45,16 +45,5 @@ public class HttpSecurityConfig {
                     authConfig.anyRequest().authenticated(); // Requiere autenticación para cualquier otra solicitud
                 });
         return  http.build();
-    }
-
-    private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> builderRequestMatchers() {
-        return authConfig -> {
-            authConfig.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-            authConfig.requestMatchers(HttpMethod.GET, "/auth/public").permitAll();
-            authConfig.requestMatchers("/error").permitAll();
-            authConfig.requestMatchers(HttpMethod.GET, "/products").hasAuthority(Permission.READ_ALL_PRODUCTS.name());
-            authConfig.requestMatchers(HttpMethod.POST, "/products").hasAuthority(Permission.SAVE_ONE_PRODUCT.name());
-            authConfig.anyRequest().denyAll();
-        };
     }
 }
