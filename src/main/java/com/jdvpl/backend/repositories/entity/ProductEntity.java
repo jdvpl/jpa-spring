@@ -38,4 +38,7 @@ public class ProductEntity {
     @Column(columnDefinition = "boolean default true")
     private Boolean status;
 
+    @ManyToOne
+    private CategoryEntity category;
+
 }

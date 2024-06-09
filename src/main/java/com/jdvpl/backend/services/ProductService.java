@@ -2,10 +2,16 @@ package com.jdvpl.backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.jdvpl.backend.controller.dto.ProductDTO;
+import com.jdvpl.backend.errors.GeneralException;
+import com.jdvpl.backend.repositories.CategoryRepository;
+import com.jdvpl.backend.repositories.entity.CategoryEntity;
 import com.jdvpl.backend.utils.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.jdvpl.backend.repositories.ProductRepository;
@@ -14,30 +20,39 @@ import com.jdvpl.backend.repositories.entity.ProductEntity;
 @Service
 public class ProductService {
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private Mappers mappers;
 
-    public List<ProductEntity> findAll(){
-        return (List<ProductEntity>) productRepository.findAll();
-    }
-    public ProductEntity save(ProductEntity personEntity){
-        return  productRepository.save(personEntity);
-    }
-    public String delete(Long id){
-        if(productRepository.findById(id).isEmpty()){
-            return "No existe registro con este id";
-        }
-        productRepository.deleteById(id);
-        return  "Registro eliminado";
+    public List<ProductDTO> findAll(){
+        return  productRepository.findAll().stream().map(mappers::toDTO).collect(Collectors.toList());
     }
 
-    public List<ProductDTO> saveAllProducts(List<ProductEntity> entities){
-        List<ProductDTO> products = new ArrayList<>();
-        entities.forEach(e -> {
-            products.add(mappers.toDTO(productRepository.save(e)));
+    public List<ProductDTO> delete(List<Long> ids) throws GeneralException{
+        ids.forEach(id -> {
+            if(productRepository.findById(id).isEmpty()){
+                throw new GeneralException(HttpStatus.CONFLICT.name(), HttpStatus.CONFLICT.value(),
+                        "No se encontró un producto con el id " + id, this.getClass().getName());
+            }
+            productRepository.deleteById(id);
+
         });
-        return products;
+        return findAll();
+    }
+
+    public List<ProductDTO> saveAllProducts(List<ProductDTO> products) throws GeneralException {
+        List<ProductDTO> productsSaved = new ArrayList<>();
+        products.forEach(product -> {
+            Optional<CategoryEntity> category = categoryRepository.findById(product.getCategoryId());
+            if (category.isEmpty()) {
+                throw new GeneralException(HttpStatus.CONFLICT.name(), HttpStatus.CONFLICT.value(), "No se encontró una categoría con el id " + product.getCategoryId(), this.getClass().getName());
+            }
+           productsSaved.add(mappers.toDTO(productRepository.save(mappers.toProduct(product, category.get()))));
+        });
+        return productsSaved;
     }
 }
