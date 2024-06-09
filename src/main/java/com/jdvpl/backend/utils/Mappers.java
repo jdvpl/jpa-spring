@@ -20,7 +20,7 @@ public class Mappers {
                 .description(dto.getDescription())
                 .quantity(dto.getQuantity())
                 .status(dto.getStatus())
-                //.category(category)
+                .category(category)
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class Mappers {
                 .description(productEntity.getDescription())
                 .quantity(productEntity.getQuantity())
                 .status(productEntity.getStatus())
-                //.idCategory(productEntity.getCategory() != null ? productEntity.getCategory().getId() : null)
+                .categoryId(productEntity.getCategory() != null ? productEntity.getCategory().getId() : null)
                 .build();
     }
 

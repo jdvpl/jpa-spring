@@ -24,7 +24,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequestDto authentication){
         
@@ -32,7 +32,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(token);
     }
 
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequestDto authentication){
         

@@ -1,14 +1,14 @@
 package com.jdvpl.backend.config.security;
 
 import com.jdvpl.backend.services.CustomAuthenticationEntryPoint;
+import com.jdvpl.backend.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
 import com.jdvpl.backend.config.security.filter.JwtAuthenticationFilter;
 
 @Component
-@EnableWebSecurity
-@EnableMethodSecurity
+//@EnableWebSecurity
+//@EnableMethodSecurity
 class HttpSecurityConfig {
 
     @Autowired
@@ -29,6 +29,9 @@ class HttpSecurityConfig {
 
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Value("${api.path.admin}")
+    private  String adminPath;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -42,6 +45,8 @@ class HttpSecurityConfig {
                 .authorizeHttpRequests(authConfig -> {
                     authConfig.requestMatchers("/auth/**").permitAll(); // Permitir todas las rutas bajo /auth/
                     authConfig.requestMatchers("/error").permitAll();
+                    authConfig.requestMatchers("/products/"+adminPath+"/**", "/category/"+adminPath+"/**").hasRole(Role.ADMINISTRATOR.name());
+                    authConfig.requestMatchers("/webjars/**","/v3/api-docs/**","/swagger-resources/**","/swagger-ui/**").permitAll();
                     authConfig.anyRequest().authenticated(); // Requiere autenticación para cualquier otra solicitud
                 });
         return  http.build();

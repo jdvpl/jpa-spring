@@ -1,9 +1,7 @@
 package com.jdvpl.backend.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -25,4 +23,7 @@ public class ProductDTO {
 
     @Builder.Default
     private Boolean status = true;
+
+    @NotNull(message = "El id de la categoria es obligatorio")
+    private Long categoryId;
 }
