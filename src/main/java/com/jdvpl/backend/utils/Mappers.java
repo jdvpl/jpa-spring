@@ -1,8 +1,10 @@
 package com.jdvpl.backend.utils;
 
 import com.jdvpl.backend.controller.dto.ProductDTO;
-import com.jdvpl.backend.repositories.entity.CategoryEntity;
-import com.jdvpl.backend.repositories.entity.ProductEntity;
+import com.jdvpl.backend.controller.dto.ShoppingCartDTO;
+import com.jdvpl.backend.controller.dto.ShoppingCartProductDTO;
+import com.jdvpl.backend.controller.dto.UserDTO;
+import com.jdvpl.backend.repositories.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,5 +54,37 @@ public class Mappers {
         return productEntities.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO toDTO(UserEntity user) {
+        return UserDTO.builder()
+                .id(user.getId())
+                .name(user.getName() + " " + user.getLastName())
+                .email(user.getUsername())
+                .build();
+    }
+
+    public ShoppingCartDTO toCartDTO(ShoppingCartEntity entity) {
+        ShoppingCartDTO cartDTO = new ShoppingCartDTO();
+        cartDTO.setIdCart(entity.getId());
+
+        if (entity.getUser() != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(entity.getUser().getId());
+            userDTO.setName(entity.getUser().getName());
+            userDTO.setEmail(entity.getUser().getUsername());
+            cartDTO.setUser(userDTO);
+        }
+
+        cartDTO.setDateCreated(entity.getDateCreation());
+        return cartDTO;
+    }
+
+    public ShoppingCartProductDTO toShoppingCartProductDTO(ShoppingCartProductEntity entity) {
+        ShoppingCartProductDTO dto = new ShoppingCartProductDTO();
+        dto.setId(entity.getId());
+        dto.setProduct(toDTO(entity.getProduct()));
+        dto.setQuantity(entity.getQuantity());
+        return dto;
     }
 }
