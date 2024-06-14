@@ -1,0 +1,34 @@
+# Configuración de Swagger
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    show-sql: ${SPRING_JPA_SHOW_SQL}
+    properties:
+      hibernate:
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+
+server:
+  port: ${SERVER_PORT}
+
+security:
+  jwt:
+    expiration-minutes: ${SECURITY_JWT_EXPIRATION_MINUTES}
+    secret-key: ${SECURITY_JWT_SECRET_KEY}
+
+api:
+  path:
+    admin: ${API_PATH_ADMIN}
