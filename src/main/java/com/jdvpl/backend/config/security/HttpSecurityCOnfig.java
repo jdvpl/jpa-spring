@@ -9,12 +9,15 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 import com.jdvpl.backend.config.security.filter.JwtAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Component
 //@EnableWebSecurity
@@ -48,7 +51,9 @@ class HttpSecurityConfig {
                     authConfig.requestMatchers("/products/"+adminPath+"/**", "/category/"+adminPath+"/**").hasRole(Role.ADMINISTRATOR.name());
                     authConfig.requestMatchers("/webjars/**","/v3/api-docs/**","/swagger-resources/**","/swagger-ui/**").permitAll();
                     authConfig.anyRequest().authenticated(); // Requiere autenticación para cualquier otra solicitud
-                });
+                })
+                .cors(CorsConfigurer::disable)
+                .formLogin(FormLoginConfigurer::disable);
         return  http.build();
     }
 }
