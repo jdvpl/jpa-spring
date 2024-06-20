@@ -32,8 +32,6 @@ COPY --from=build /app/build/libs/*.jar app.jar
 # Exponer el puerto que la aplicación utilizará
 EXPOSE 9500
 
-# Cambiar de nuevo a un usuario privilegiado para ejecutar procesos si es necesario
-USER root
 
 # Copiar archivos de configuración
 COPY src/main/resources/application.properties /app/config/

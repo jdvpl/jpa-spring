@@ -1,14 +1,19 @@
 package com.jdvpl.backend.utils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.jdvpl.backend.controller.dto.ProductDTO;
 import com.jdvpl.backend.controller.dto.ShoppingCartDTO;
 import com.jdvpl.backend.controller.dto.ShoppingCartProductDTO;
 import com.jdvpl.backend.controller.dto.UserDTO;
-import com.jdvpl.backend.repositories.entity.*;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.jdvpl.backend.repositories.entity.CategoryEntity;
+import com.jdvpl.backend.repositories.entity.ProductEntity;
+import com.jdvpl.backend.repositories.entity.ShoppingCartEntity;
+import com.jdvpl.backend.repositories.entity.ShoppingCartProductEntity;
+import com.jdvpl.backend.repositories.entity.UserEntity;
 
 @Service
 public class Mappers {
@@ -58,7 +63,6 @@ public class Mappers {
 
     public UserDTO toDTO(UserEntity user) {
         return UserDTO.builder()
-                .id(user.getId())
                 .name(user.getName() + " " + user.getLastName())
                 .email(user.getUsername())
                 .build();
@@ -70,7 +74,6 @@ public class Mappers {
 
         if (entity.getUser() != null) {
             UserDTO userDTO = new UserDTO();
-            userDTO.setId(entity.getUser().getId());
             userDTO.setName(entity.getUser().getName());
             userDTO.setEmail(entity.getUser().getUsername());
             cartDTO.setUser(userDTO);

@@ -50,7 +50,6 @@ public class AuthenticationService {
         );
         authenticationManager.authenticate(authenticationToken);
         UserEntity user = userRepository.findByUsername(authentication.getUsername()).get();
-
         String jwt=jwtService.generateToken(user,generateExtraClaims(user));
         AuthenticationResponse token= new AuthenticationResponse(jwt);
         return  token;
@@ -79,6 +78,7 @@ public class AuthenticationService {
     private Map<String,Object> generateExtraClaims(UserEntity user) {
         Map<String,Object> extraClaims = new HashMap<>();
         extraClaims.put("name",user.getName());
+        extraClaims.put("id",user.getId());
         extraClaims.put("lastName",user.getLastName());
         extraClaims.put("role", "ROLE_"+user.getRole().name());
         extraClaims.put("permissions",user.getAuthorities());
