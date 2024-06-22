@@ -50,6 +50,7 @@ public class Mappers {
                 .price(productEntity.getPrice())
                 .description(productEntity.getDescription())
                 .quantity(productEntity.getQuantity())
+                .picture(productEntity.getPicture())
                 .status(productEntity.getStatus())
                 .categoryId(productEntity.getCategory() != null ? productEntity.getCategory().getId() : null)
                 .build();

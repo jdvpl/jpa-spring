@@ -1,9 +1,12 @@
 package com.jdvpl.backend.controller.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
 import java.math.BigDecimal;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +23,8 @@ public class ProductDTO {
     private String description;
 
     private int quantity;
+
+    private String picture;
 
     @Builder.Default
     private Boolean status = true;
