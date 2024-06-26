@@ -1,12 +1,13 @@
 package com.jdvpl.backend.controller.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +25,6 @@ public class CategoryDTO {
 
     private Boolean status;
 
-    private List<ProductDTO> products;
+    @Builder.Default
+    private List<ProductDTO> products = new ArrayList<>();
 }

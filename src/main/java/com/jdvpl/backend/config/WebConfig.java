@@ -13,5 +13,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*") // Permitir todos los orígenes, puedes especificar orígenes específicos
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
-    }
+                }
 }
