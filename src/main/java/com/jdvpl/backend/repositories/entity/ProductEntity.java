@@ -1,7 +1,5 @@
 package com.jdvpl.backend.repositories.entity;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +35,7 @@ public class ProductEntity {
     private String name;
 
     @DecimalMin(value="0.01")
-    private BigDecimal price;
+    private Float price;
 
     @NotBlank
     private String description;

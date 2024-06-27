@@ -27,6 +27,7 @@ public class Mappers {
                 .description(dto.getDescription())
                 .quantity(dto.getQuantity())
                 .status(dto.getStatus())
+                .picture(dto.getPicture())
                 .category(category)
                 .build();
     }
@@ -39,6 +40,7 @@ public class Mappers {
                 .description(dto.getDescription())
                 .quantity(dto.getQuantity())
                 .status(dto.getStatus())
+                .picture(dto.getPicture())
                 .build();
     }
 

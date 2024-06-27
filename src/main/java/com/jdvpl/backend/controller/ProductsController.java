@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +36,7 @@ public class ProductsController {
     }
 
 
-    @PostMapping("${api.path.admin}")
-    public ResponseEntity<List<ProductDTO>> create(@RequestBody @Valid List<ProductDTO> product) throws GeneralException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productsService.saveAllProducts(product));
-    }
+  
 
     @DeleteMapping("${api.path.admin}")
     public ResponseEntity<List<ProductDTO>> delete (@RequestBody @Valid List<ProductDTO> products,
@@ -52,13 +50,24 @@ public class ProductsController {
 
 
     @DeleteMapping("${api.path.admin}/delete")
-    public ResponseEntity<Class<Void>> deleteCategory(@RequestParam (required = true) Long id) throws GeneralException {
+    public ResponseEntity<Class<Void>> deleteOneProduct(@RequestParam (required = true) Long id) throws GeneralException {
         try {
             productsService.deleteOne(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Void.class);
         }catch (GeneralException e){
             throw e;
         }
+
+    }
+
+    @PostMapping("${api.path.admin}")
+    public ResponseEntity<ProductDTO> create(@RequestBody @Valid ProductDTO product) throws GeneralException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productsService.save(product));
+    }
+    @PutMapping("${api.path.admin}/update")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody @Valid ProductDTO product) throws GeneralException {
+            return ResponseEntity.status(HttpStatus.CREATED).body(productsService.updateOne(product));
+      
 
     }
 }

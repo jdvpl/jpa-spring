@@ -1,7 +1,6 @@
 package com.jdvpl.backend.controller.dto;
 
-import java.math.BigDecimal;
-
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,15 +14,18 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
 
     private Long id;
+    @NotBlank
 
     private String name;
 
-    private BigDecimal price;
+    private Float price;
 
+    @NotBlank
     private String description;
 
     private int quantity;
 
+    @NotBlank
     private String picture;
 
     @Builder.Default
